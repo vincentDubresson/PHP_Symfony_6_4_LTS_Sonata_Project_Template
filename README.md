@@ -121,3 +121,29 @@ when@prod:
                 formatter: monolog.formatter.json
 ```
 
+## Installation de Twig
+
+1. Installation des bundles
+
+Doc : [Symfony - Rendering a template](https://symfony.com/doc/6.4/page_creation.html#rendering-a-template)
+
+```shell
+composer require twig
+```
+
+2. Prévoir une première utilisation de Chrome Lighthouse pour la mise en place des premières bonnes pratiques
+concernant le SEO (ex: balises meta). Privilégier `APP_ENV=prod` pour éviter les problèmes qui concerne la toolbar.
+
+Exemple (`base.html.twig`) :
+
+```html
+<!DOCTYPE html>
+<html lang="fr"> --> IMPORTANT
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" /> --> IMPORTANT
+        <meta name="description" content="Mini projet Sonata."> --> IMPORTANT
+        <title>{% block title %}Welcome!{% endblock %}</title>
+[...]
+```
+
