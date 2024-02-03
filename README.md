@@ -4,7 +4,7 @@
 
 1. Installation de la version skeleton de Symfony 6.4 LTS.
 
-Doc : [Installing & Setting up the Symfony Framework](https://symfony.com/doc/6.4/setup.html)
+Doc : [Symfony - Installing & Setting up the Symfony Framework](https://symfony.com/doc/6.4/setup.html)
 
 ```shell
 symfony new webroot --version="6.4.*"
@@ -14,7 +14,7 @@ symfony new webroot --version="6.4.*"
 
 ## Installation de la Debug Toolbar
 
-Doc : [Profiler](https://symfony.com/doc/6.4/profiler.html)
+Doc : [Symfony - Profiler](https://symfony.com/doc/6.4/profiler.html)
 
 1. Installation des bundles.
 
@@ -38,7 +38,86 @@ php bin/console cache:clear
 
 1. Installation des bundles
 
-Doc : [Logging](https://symfony.com/doc/6.4/logging.html#monolog)
+Doc : [Symfony - Logging](https://symfony.com/doc/6.4/logging.html#monolog)
 
 2. Configuration type (`config/packages/monolog.yaml`)
+
+Doc : [Blog - Config Monolog](https://www.nicolas-petitjean.com/tirer-partie-du-logger-symfony/)
+
+```yaml
+monolog:
+    channels:
+        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+
+when@dev:
+    monolog:
+        handlers:
+            main:
+                type: fingers_crossed #Ici, on ne log pas de debug à warning
+                action_level: warning
+                handler: nested
+            nested:
+                type: rotating_file #On génère un fichier par jour pour les logs > warning
+                path: "%kernel.logs_dir%/%kernel.environment%/%kernel.environment%.log"
+                level: warning
+                max_files: 10
+                channels: [ "!event" ]
+            console:
+                type: console
+                process_psr_3_messages: false
+                channels: ["!event", "!doctrine", "!console" ]
+            deprecation:
+                type: rotating_file #On génère un fichier par jour pour les dépréciations.
+                channels: [ deprecation ]
+                path: "%kernel.logs_dir%/%kernel.environment%/deprecations/%kernel.environment%.log"
+                level: debug
+                max_files: 10
+                formatter: monolog.formatter.json
+
+when@test:
+    monolog:
+        handlers:
+            main:
+                type: fingers_crossed
+                action_level: error
+                handler: nested
+                excluded_http_codes: [404, 405]
+                channels: ["!event"]
+                buffer_size: 50 # How many messages should be saved? Prevent memory leaks
+            nested:
+                type: rotating_file
+                path: "%kernel.logs_dir%/%kernel.environment%/%kernel.environment%.log"
+                level: info
+                max_files: 30
+                formatter: monolog.formatter.json
+
+when@prod:
+    monolog:
+        handlers:
+            main:
+                type: fingers_crossed
+                action_level: error
+                handler: nested
+                excluded_http_codes: [404, 405]
+                buffer_size: 50 # How many messages should be saved? Prevent memory leaks
+            nested:
+                type: rotating_file
+                path: "%kernel.logs_dir%/%kernel.environment%/%kernel.environment%.log"
+                level: debug
+                max_files: 30
+                formatter: monolog.formatter.json
+
+            console:
+                type: console
+                process_psr_3_messages: false
+                channels: ["!event", "!doctrine"]
+
+            deprecation:
+                type: rotating_file
+                channels: [deprecation]
+                path: php://stderr
+                level: debug
+                max_files: 30
+                formatter: monolog.formatter.json
+```
 
