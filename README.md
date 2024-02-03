@@ -33,3 +33,12 @@ APP_DEBUG=<TRUE or FALSE>
 ```shell
 php bin/console cache:clear
 ```
+
+## Installation de Monolog
+
+1. Installation des bundles
+
+Doc : [Logging](https://symfony.com/doc/6.4/logging.html#monolog)
+
+2. Configuration type (`config/packages/monolog.yaml`)
+
