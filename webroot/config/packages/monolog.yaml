@@ -26,6 +26,13 @@ when@dev:
                 level: debug
                 max_files: 10
                 formatter: monolog.formatter.json
+            security:
+                type: rotating_file
+                channels: [ security ]
+                path: "%kernel.logs_dir%/%kernel.environment%/security/%kernel.environment%.log"
+                level: debug
+                max_files: 10
+                formatter: monolog.formatter.json
 
 when@test:
     monolog:
