@@ -104,6 +104,14 @@ Exemple (`base.html.twig`) :
 [...]
 ```
 
+3. Installation du bundle Twig inline Css
+
+Doc : [Twig - Inline CSS](https://twig.symfony.com/doc/3.x/filters/inline_css.html)
+
+```shell
+composer require twig/cssinliner-extra
+```
+
 ## Installation de Nelmio Security
 
 1. Installation du bundle
