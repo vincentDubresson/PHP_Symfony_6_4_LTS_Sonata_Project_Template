@@ -354,3 +354,77 @@ when@dev:
     # See the "server:dump" command to start a new server.
     dump_destination: "tcp://%env(VAR_DUMPER_SERVER)%"
 ```
+
+## Installation de Docrtrine
+
+1. Installation des bundles
+
+[Symfony - Installing Doctrine](https://symfony.com/doc/6.4/doctrine.html#installing-doctrine)
+
+```shell
+composer require symfony/orm-pack
+composer require --dev symfony/maker-bundle
+```
+
+2. Configuration basique (`config/packages/doctrine.yaml`)
+
+```yaml
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        #server_version: '16'
+
+        profiling_collect_backtrace: '%kernel.debug%'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
+        hydrators:
+            # Used to hydrate results as a non-associative scalar array.
+            App\Doctrine\Hydrator\ColumnHydrator: App\Doctrine\Hydrator\ColumnHydrator
+
+when@test:
+    doctrine:
+        dbal:
+            # "TEST_TOKEN" is typically set by ParaTest
+            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+
+when@prod:
+    doctrine:
+        orm:
+            auto_generate_proxy_classes: false
+            proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system
+```
+
+3. Installation de Doctrine Behaviors
+
+Doc : [GitHub - Doctrine Behaviors](https://github.com/KnpLabs/DoctrineBehaviors)
+
+```shell
+composer require knplabs/doctrine-behaviors
+```
+
