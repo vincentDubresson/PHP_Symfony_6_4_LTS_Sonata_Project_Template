@@ -326,3 +326,31 @@ Doc : [GitHub - TwigCS](https://github.com/friendsoftwig/twigcs)
 ```shell
 composer require --dev friendsoftwig/twigcs
 ```
+
+## Installation de var-dumper
+
+1. Installation du bundle
+
+Doc : [Symfony - VarDumper](https://symfony.com/doc/6.4/components/var_dumper.html)
+
+```shell
+composer require --dev symfony/var-dumper
+```
+
+2. Installation du debug bundle
+
+```shell
+composer require --dev symfony/debug-bundle
+```
+
+3. Configuration de var-dumper
+
+Créer un fichier `config/packages/debug.yaml`
+
+```yaml
+when@dev:
+  debug:
+    # Forwards VarDumper Data clones to a centralized server allowing to inspect dumps on CLI or in your browser.
+    # See the "server:dump" command to start a new server.
+    dump_destination: "tcp://%env(VAR_DUMPER_SERVER)%"
+```
