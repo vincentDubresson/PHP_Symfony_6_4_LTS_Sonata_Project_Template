@@ -436,3 +436,9 @@ Doc : [GitHub - Doctrine Behaviors](https://github.com/KnpLabs/DoctrineBehaviors
 composer require knplabs/doctrine-behaviors
 ```
 
+## Installation du bundle Apache Pack
+
+```shell
+composer require symfony/apache-pack
+```
+
