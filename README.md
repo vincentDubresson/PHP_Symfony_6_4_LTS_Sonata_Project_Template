@@ -46,80 +46,37 @@ Doc : [Blog - Config Monolog](https://www.nicolas-petitjean.com/tirer-partie-du-
 
 ```yaml
 monolog:
-    channels:
-        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+  channels:
+    - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
 
-when@dev:
-    monolog:
-        handlers:
-            main:
-                type: fingers_crossed #Ici, on ne log pas de debug à warning
-                action_level: warning
-                handler: nested
-            nested:
-                type: rotating_file #On génère un fichier par jour pour les logs > warning
-                path: "%kernel.logs_dir%/%kernel.environment%/%kernel.environment%.log"
-                level: warning
-                max_files: 10
-                channels: [ "!event" ]
-            console:
-                type: console
-                process_psr_3_messages: false
-                channels: ["!event", "!doctrine", "!console" ]
-            deprecation:
-                type: rotating_file #On génère un fichier par jour pour les dépréciations.
-                channels: [ deprecation ]
-                path: "%kernel.logs_dir%/%kernel.environment%/deprecations/%kernel.environment%.log"
-                level: debug
-                max_files: 10
-                formatter: monolog.formatter.json
-
-when@test:
-    monolog:
-        handlers:
-            main:
-                type: fingers_crossed
-                action_level: error
-                handler: nested
-                excluded_http_codes: [404, 405]
-                channels: ["!event"]
-                buffer_size: 50 # How many messages should be saved? Prevent memory leaks
-            nested:
-                type: rotating_file
-                path: "%kernel.logs_dir%/%kernel.environment%/%kernel.environment%.log"
-                level: info
-                max_files: 30
-                formatter: monolog.formatter.json
-
-when@prod:
-    monolog:
-        handlers:
-            main:
-                type: fingers_crossed
-                action_level: error
-                handler: nested
-                excluded_http_codes: [404, 405]
-                buffer_size: 50 # How many messages should be saved? Prevent memory leaks
-            nested:
-                type: rotating_file
-                path: "%kernel.logs_dir%/%kernel.environment%/%kernel.environment%.log"
-                level: debug
-                max_files: 30
-                formatter: monolog.formatter.json
-
-            console:
-                type: console
-                process_psr_3_messages: false
-                channels: ["!event", "!doctrine"]
-
-            deprecation:
-                type: rotating_file
-                channels: [deprecation]
-                path: php://stderr
-                level: debug
-                max_files: 30
-                formatter: monolog.formatter.json
+  handlers:
+    main:
+      type: fingers_crossed
+      action_level: error
+      handler: nested
+      excluded_http_codes: [403, 404, 405]
+      buffer_size: 50 # How many messages should be saved? Prevent memory leaks
+    nested:
+      type: rotating_file
+      path: "%kernel.logs_dir%/%kernel.environment%/%kernel.environment%.log"
+      level: error
+      max_files: 30
+      channels: [ "!event" ]
+    #        mailed:
+    #            type: symfony_mailer
+    #            from_email: '%noreply_email%'
+    #            to_email: '%developer_email%'
+    #            level: error
+    #            subject: Erreur critique
+    #            formatter: monolog.formatter.html
+    #            content_type: text/html
+    console:
+      type: console
+      process_psr_3_messages: false
+      channels: [ "!event", "!doctrine" ]
 ```
+
+La partie mailed sera à décommenter lors de l'installation de mailer/symfony.
 
 ## Installation de Twig
 
@@ -159,110 +116,137 @@ composer require nelmio/security-bundle
 
 2. Configuration type (`config/packages/nelmio_security.yaml`)
 
-Cette config n'est pas finale. Elle est susceptible d'évoluer tout au long du dev.
-Cette config permet de ne pas avoir de problèmes avec la Toolbar.
+Après avoir installé le webpack encore, penser à modifier le favicon.ico.
 
 ```yaml
 # config/packages/nelmio_security.yaml
 nelmio_security:
-    # signs/verifies all cookies
-    signed_cookie:
-        names: ['*']
-    # prevents framing of the entire site
-    clickjacking:
-        paths:
-            '^/.*': DENY
-        hosts:
-            - '^foo\.com$'
-            - '\.example\.org$'
+  # prevents framing of the entire site
+  clickjacking:
+    paths:
+      '^/.*': DENY
 
-    # prevents redirections outside the website's domain
-    external_redirects:
-        abort: true
-        log: true
+  # prevents redirections outside the website's domain
+  external_redirects:
+    abort: true
+    log: true
 
-    # prevents inline scripts, unsafe eval, external scripts/images/styles/frames, etc
-    csp:
-        hosts: []
-        content_types: []
-        report_logger_service: monolog.logger.security
-        enforce:
-            level1_fallback: false
-            browser_adaptive:
-                enabled: false
-            default-src:
-                - 'self'
-            script-src:
-                - 'self'
-                - 'unsafe-inline'
-            style-src:
-                - 'self'
-                - 'unsafe-inline'
-            block-all-mixed-content: true # defaults to false, blocks HTTP content over HTTPS transport
-            # upgrade-insecure-requests: true # defaults to false, upgrades HTTP requests to HTTPS transport
+  # prevents inline scripts, unsafe eval, external scripts/images/styles/frames, etc
+  csp:
+    hosts: []
+    content_types: []
+    enforce:
+      level1_fallback: false
+      browser_adaptive:
+        enabled: false
+      # CSP headers in alphabetical order.
+      base-uri:
+        - 'self'
+      block-all-mixed-content: true # defaults to false, blocks HTTP content over HTTPS transport
+      connect-src:
+        - 'self'
+      default-src:
+        - 'none'
+      font-src:
+        - 'self'
+      form-action:
+        - 'self'
+      frame-ancestors:
+        - 'none'
+      img-src:
+        - 'self'
+      object-src:
+        - 'none'
+      script-src:
+        - 'self'
+      style-src:
+        - 'self'
+        - 'unsafe-inline'
+      upgrade-insecure-requests: true # defaults to false, upgrades HTTP requests to HTTPS transport
 
-    # disables content type sniffing for script resources
-    content_type:
-        nosniff: true
+  # disables content type sniffing for script resources
+  content_type:
+    nosniff: true
 
-    # forces Microsoft's XSS-Protection with
-    # its block mode
-    xss_protection:
-        enabled: true
-        mode_block: true
-        report_uri: '%router.request_context.base_url%/nelmio/xss/report'
+  # forces Microsoft's XSS-Protection with
+  # its block mode
+  xss_protection:
+    enabled: true
+    mode_block: true
 
-    # Send a full URL in the ``Referer`` header when performing a same-origin request,
-    # only send the origin of the document to secure destination (HTTPS->HTTPS),
-    # and send no header to a less secure destination (HTTPS->HTTP).
-    # If ``strict-origin-when-cross-origin`` is not supported, use ``no-referrer`` policy,
-    # no referrer information is sent along with requests.
-    referrer_policy:
-        enabled: true
-        policies:
-            - 'no-referrer'
-            - 'strict-origin-when-cross-origin'
+  # Send a full URL in the ``Referer`` header when performing a same-origin request,
+  # only send the origin of the document to secure destination (HTTPS->HTTPS),
+  # and send no header to a less secure destination (HTTPS->HTTP).
+  # If ``strict-origin-when-cross-origin`` is not supported, use ``no-referrer`` policy,
+  # no referrer information is sent along with requests.
+  referrer_policy:
+    enabled: true
+    policies:
+      - 'strict-origin-when-cross-origin'
 
-    # forces HTTPS handling, don't combine with flexible mode
-    # and make sure you have SSL working on your site before enabling this
-    #    forced_ssl:
-    #        hsts_max_age: 2592000 # 30 days
-    #        hsts_subdomains: true
-    #        redirect_status_code: 302 # default, switch to 301 for permanent redirects
+  # forces HTTPS handling, don't combine with flexible mode
+  # and make sure you have SSL working on your site before enabling this
+  #    forced_ssl:
+  #        hsts_max_age: 2592000 # 30 days
+  #        hsts_subdomains: true
+  #        redirect_status_code: 302 # default, switch to 301 for permanent redirects
 
-    # flexible HTTPS handling, read the detailed config info
-    # and make sure you have SSL working on your site before enabling this
+  # flexible HTTPS handling, read the detailed config info
+  # and make sure you have SSL working on your site before enabling this
 #    flexible_ssl:
 #        cookie_name: auth
 #        unsecured_logout: false
 ```
 
-3. Ajout de config dans le fichier `config/routes.yaml`
+## Installation de PHPSTAN
 
-```yaml
-nelmio_security:
-    path: /nelmio/csp/report
-    defaults: { _controller: nelmio_security.csp_reporter_controller::indexAction }
-    methods: [ POST ]
+1. Installation du bundle d'origine
+
+Doc : [PHPSTAN - Getting Started](https://phpstan.org/user-guide/getting-started)
+
+```shell
+composer require --dev phpstan/phpstan
 ```
 
-4. Ajout de config dans le fichier `config/packages/monolog.yaml`
+2. Installation du bundle Extensions Installer
+
+Doc : [GitHub - PHPSTAN Extensions Installer](https://github.com/phpstan/extension-installer)
+
+```shell
+composer require --dev phpstan/extension-installer
+```
+
+3.Installation du bundle Symfony
+
+Doc : [GitHub - PHPSTAN Symfony](https://github.com/phpstan/phpstan-symfony)
+
+```shell
+composer require --dev phpstan/phpstan-symfony
+```
+
+4. Installation du bundle Doctrine
+
+Doc : [GitHub - PHPSTAN Doctrine](https://github.com/phpstan/phpstan-doctrine)
+
+```shell
+composer require --dev phpstan/phpstan-doctrine
+```
+
+5. Configuration de PHPSTAN
+
+Cette config n'est pas définitive. Il est possible de rajouter des exclusions.
 
 ```yaml
-            deprecation:
-                type: rotating_file
-                channels: [ deprecation ]
-                path: "%kernel.logs_dir%/%kernel.environment%/deprecations/%kernel.environment%.log"
-                level: debug
-                max_files: 10
-                formatter: monolog.formatter.json
-            # ADD THIS >>
-            security:
-                type: rotating_file
-                channels: [ security ]
-                path: "%kernel.logs_dir%/%kernel.environment%/security/%kernel.environment%.log"
-                level: debug
-                max_files: 10
-                formatter: monolog.formatter.json
-            # << TO HERE
+parameters:
+    level: 8
+    tmpDir: '%rootDir%/../../../tmp/phpstan'
+    symfony:
+        # @see https://github.com/phpstan/phpstan-symfony#configuration
+        containerXmlPath: '%rootDir%/../../../var/cache/test/App_KernelTestDebugContainer.xml'
+        consoleApplicationLoader: 'tests/phpstan/console_application.php'
+    excludePaths:
+        - '%rootDir%/../../../src/Controller/TestController.php'
+    doctrine:
+        objectManagerLoader: '%rootDir%/../../../tests/phpstan/object_manager.php'
 ```
+

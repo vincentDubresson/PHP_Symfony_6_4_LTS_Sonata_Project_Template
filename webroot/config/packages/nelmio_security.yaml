@@ -1,15 +1,9 @@
 # config/packages/nelmio_security.yaml
 nelmio_security:
-    # signs/verifies all cookies
-    signed_cookie:
-        names: ['*']
     # prevents framing of the entire site
     clickjacking:
         paths:
             '^/.*': DENY
-        hosts:
-            - '^foo\.com$'
-            - '\.example\.org$'
 
     # prevents redirections outside the website's domain
     external_redirects:
@@ -20,22 +14,34 @@ nelmio_security:
     csp:
         hosts: []
         content_types: []
-        report_logger_service: monolog.logger.security
         enforce:
             level1_fallback: false
             browser_adaptive:
                 enabled: false
-            report-uri: '%router.request_context.base_url%/nelmio/csp/report'
-            default-src:
+            # CSP headers in alphabetical order.
+            base-uri:
                 - 'self'
+            block-all-mixed-content: true # defaults to false, blocks HTTP content over HTTPS transport
+            connect-src:
+                - 'self'
+            default-src:
+                - 'none'
+            font-src:
+                - 'self'
+            form-action:
+                - 'self'
+            frame-ancestors:
+                - 'none'
+            img-src:
+                - 'self'
+            object-src:
+                - 'none'
             script-src:
                 - 'self'
-                - 'unsafe-inline'
             style-src:
                 - 'self'
                 - 'unsafe-inline'
-            block-all-mixed-content: true # defaults to false, blocks HTTP content over HTTPS transport
-            # upgrade-insecure-requests: true # defaults to false, upgrades HTTP requests to HTTPS transport
+            upgrade-insecure-requests: true # defaults to false, upgrades HTTP requests to HTTPS transport
 
     # disables content type sniffing for script resources
     content_type:
@@ -46,7 +52,6 @@ nelmio_security:
     xss_protection:
         enabled: true
         mode_block: true
-        report_uri: '%router.request_context.base_url%/nelmio/xss/report'
 
     # Send a full URL in the ``Referer`` header when performing a same-origin request,
     # only send the origin of the document to secure destination (HTTPS->HTTPS),
@@ -56,7 +61,6 @@ nelmio_security:
     referrer_policy:
         enabled: true
         policies:
-            - 'no-referrer'
             - 'strict-origin-when-cross-origin'
 
     # forces HTTPS handling, don't combine with flexible mode

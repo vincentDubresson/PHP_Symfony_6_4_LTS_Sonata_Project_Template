@@ -7,6 +7,10 @@
 /public/bundles/
 /var/
 /vendor/
+/tmp/
 ###< symfony/framework-bundle ###
 
 /src/Controller/TestController.php
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
