@@ -21,6 +21,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.49",
+        "friendsoftwig/twigcs": "^6.4",
         "phpstan/extension-installer": "^1.3",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-doctrine": "^1.3",

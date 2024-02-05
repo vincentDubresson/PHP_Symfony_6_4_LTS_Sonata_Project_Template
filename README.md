@@ -316,3 +316,13 @@ return (new PhpCsFixer\Config())
     ->setFinder($finder)
 ;
 ```
+
+## Installation de TwigCs
+
+1. Installation du bundle
+
+Doc : [GitHub - TwigCS](https://github.com/friendsoftwig/twigcs)
+
+```shell
+composer require --dev friendsoftwig/twigcs
+```
