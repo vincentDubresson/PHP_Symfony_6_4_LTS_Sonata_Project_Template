@@ -13,4 +13,10 @@ class HomeController extends AbstractController
     {
         return $this->render('home/home.html.twig');
     }
+
+    #[Route('/logged', name: 'app_logged_action')]
+    public function loggedAction(): Response
+    {
+        return $this->render('home/logged.html.twig');
+    }
 }

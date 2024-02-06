@@ -442,3 +442,116 @@ composer require knplabs/doctrine-behaviors
 composer require symfony/apache-pack
 ```
 
+## Installation du bundle Security
+
+1. Installation du Bundle
+
+Doc : [Symfony - Security](https://symfony.com/doc/6.4/security.html)
+
+```shell
+composer require symfony/security-bundle
+```
+
+2. Création d'une entité user
+
+Attention : Si une erreur de Type Dbal se présente, ajouter la ligne ci-dessous
+dans le `composer.json`
+
+```shell
+"doctrine/dbal": "^3.8",
+```
+
+Source : [StackOverFlow](https://stackoverflow.com/questions/77939886/doctrine-undefined-constant-doctrine-dbal-types-typesarray)
+
+3. Installation du bundle rate-limiter
+
+Doc : [Symfony - Rate Limiter](https://symfony.com/doc/6.4/rate_limiter.html)
+
+```shell
+composer require symfony/rate-limiter
+```
+
+4. Création du Login Form
+
+```shell
+php bin/console make:security:form-login
+```
+
+5. Mise en place du remember me
+
+Doc : [Symfony - Remember me](https://symfony.com/doc/current/security/remember_me.html#security-remember-me-authenticator)
+
+6. Exemple de config
+
+```yaml
+# security.yaml
+security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: app_user_provider
+            form_login:
+                login_path: app_security_login
+                check_path: app_security_login
+                enable_csrf: true
+                default_target_path: app_logged_action
+            logout:
+                path: app_security_logout
+                # where to redirect after logout
+                target: app_security_login
+            login_throttling: true
+            remember_me:
+                secret: '%kernel.secret%' # required
+                lifetime: 604800 # 1 week in seconds
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/logged, roles: ROLE_USER }
+
+    access_decision_manager:
+        strategy: unanimous
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon
+```
+
+```yaml
+#framework.yaml
+# Remove or comment this section to explicitly disable session support.
+session:
+  handler_id: null
+  cookie_secure: auto
+  cookie_samesite: lax
+  cookie_lifetime: 129600   # 36 heures en secondes (36 * 60 * 60)
+```
