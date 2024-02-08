@@ -41,11 +41,9 @@ return (new PhpCsFixer\Config())
         'phpdoc_annotation_without_dot' => false,
         'phpdoc_to_comment' => ['ignored_tags' => ['var']],
         'php_unit_test_class_requires_covers' => false,
-        'single_blank_line_before_namespace' => true,
         'single_quote' => true,
         'space_after_semicolon' => true,
         'yoda_style' => false,
     ])
     ->setFinder($finder)
-    ;
-
+;

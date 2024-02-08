@@ -436,6 +436,14 @@ Doc : [GitHub - Doctrine Behaviors](https://github.com/KnpLabs/DoctrineBehaviors
 composer require knplabs/doctrine-behaviors
 ```
 
+4. Installation de Symfony Validator
+
+Doc : [GitHub - Validation](https://symfony.com/doc/6.4/validation.html)
+
+```shell
+composer require symfony/validator
+```
+
 ## Installation du bundle Apache Pack
 
 ```shell

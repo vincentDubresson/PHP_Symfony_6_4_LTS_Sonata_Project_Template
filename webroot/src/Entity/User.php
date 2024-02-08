@@ -8,43 +8,19 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User extends AbstractUser implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends AbstractContact implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    /**
+     * @var array<string>
+     */
     #[ORM\Column]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
-    private ?string $password = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
+    #[ORM\Column(type: 'string')]
+    private string $password;
 
     /**
      * @see UserInterface
@@ -58,6 +34,9 @@ class User extends AbstractUser implements UserInterface, PasswordAuthenticatedU
         return array_unique($roles);
     }
 
+    /**
+     * @param array<string> $roles
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -87,5 +66,10 @@ class User extends AbstractUser implements UserInterface, PasswordAuthenticatedU
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) parent::getEmail();
     }
 }
