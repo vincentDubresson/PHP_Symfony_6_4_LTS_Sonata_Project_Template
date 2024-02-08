@@ -1,0 +1,12 @@
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+        envelope:
+            sender: '%developer_email%'
+
+when@staging:
+    framework:
+        mailer:
+            envelope:
+                # Redirect emails to the following addresses without changing the "To:".
+                recipients: ['%developer_email%']

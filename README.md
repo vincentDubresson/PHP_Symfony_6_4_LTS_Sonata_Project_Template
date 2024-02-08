@@ -563,3 +563,14 @@ session:
   cookie_samesite: lax
   cookie_lifetime: 129600   # 36 heures en secondes (36 * 60 * 60)
 ```
+
+## Installation de Mailer Symfony
+
+1. Installation du bundle
+
+Doc : [Symfony - Mailer](https://symfony.com/doc/6.4/mailer.html)
+
+```shell
+composer require symfony/mailer
+```
+

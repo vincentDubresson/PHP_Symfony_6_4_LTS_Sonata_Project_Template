@@ -15,14 +15,14 @@ monolog:
             level: error
             max_files: 30
             channels: [ "!event" ]
-#        mailed:
-#            type: symfony_mailer
-#            from_email: '%noreply_email%'
-#            to_email: '%developer_email%'
-#            level: error
-#            subject: Erreur critique
-#            formatter: monolog.formatter.html
-#            content_type: text/html
+        mailed:
+            type: symfony_mailer
+            from_email: '%developer_email%'
+            to_email: '%developer_email%'
+            level: error
+            subject: Erreur critique
+            formatter: monolog.formatter.html
+            content_type: text/html
         console:
             type: console
             process_psr_3_messages: false
