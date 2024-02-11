@@ -1,8 +1,9 @@
 framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
-        envelope:
-            sender: '%developer_email%'
+        # If you want to redirect all mails
+#        envelope:
+#            sender: '%developer_email%'
 
 when@staging:
     framework:

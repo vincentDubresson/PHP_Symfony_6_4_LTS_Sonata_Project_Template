@@ -574,3 +574,18 @@ Doc : [Symfony - Mailer](https://symfony.com/doc/6.4/mailer.html)
 composer require symfony/mailer
 ```
 
+## Installation du bundle Reset Password
+
+1. Installation du bundle
+
+Doc : [Symfony - Reset Password](https://symfony.com/doc/6.4/security/passwords.html#reset-password)
+
+```shell
+composer require symfonycasts/reset-password-bundle
+```
+
+2. Installation de symfony Form
+
+```shell
+composer require symfony/form
+```
