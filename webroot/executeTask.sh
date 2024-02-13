@@ -25,3 +25,6 @@ npm run eslint:jsx
 
 # Tâche 8
 npm run eslint:js
+
+# Tâche 9
+npm run stylelint
