@@ -19,3 +19,9 @@ composer phpstan
 
 # Tâche 6
 composer csfixer:dryrun
+
+# Tâche 7
+npm run eslint:jsx
+
+# Tâche 8
+npm run eslint:js

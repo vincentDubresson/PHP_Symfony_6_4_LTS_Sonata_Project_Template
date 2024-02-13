@@ -104,7 +104,7 @@
             "vendor/bin/twigcs templates --ansi"
         ],
         "phpstan": [
-            "vendor/bin/phpstan analyse src --no-progress --ansi --level=9"
+            "vendor/bin/phpstan analyse src -vvv --no-progress --ansi --level=9"
         ],
         "csfixer:dryrun": [
             "vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --diff --ansi"

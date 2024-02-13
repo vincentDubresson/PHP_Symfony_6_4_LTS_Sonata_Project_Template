@@ -9,6 +9,14 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 Encore
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
+
+    // copy all files from assets/images into public/build (the output path). If you have versioning enabled, the copied files will include a hash based on their content.
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[hash:8].[ext]',
+        pattern: /\.(gif|jpg|jpeg|png|svg|ico|webp)$/,
+    })
+
     // public path used by the web server to access the output path
     .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy

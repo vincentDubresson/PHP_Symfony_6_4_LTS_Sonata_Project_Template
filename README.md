@@ -709,3 +709,46 @@ Doc : [Tailwind - Tailwind avec Symfony](https://tailwindcss.com/docs/guides/sym
 6. Création d'une page avec un composant React
 
 Doc : [Blog YoanDev](https://yoandev.co/du-react-avec-symfony)
+
+## Installation de ESLint
+
+1. Installation du bundle
+
+Doc : [Eslint](https://eslint.org/docs/latest/use/getting-started)
+
+```shell
+npm init @eslint/config
+```
+
+Suivre les consignes, puis choisir Airbnb.
+
+2. Configuration
+
+Fichier `.eslintrc.json` :
+
+```json
+{
+    "parser": "@babel/eslint-parser",
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": "airbnb-base",
+    "parserOptions": {
+        "requireConfigFile": false,
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "babelOptions": {
+            "presets": ["@babel/preset-react"]
+        }
+    },
+    "rules": {
+        "import/no-extraneous-dependencies": 0,
+        "no-unused-vars": 0
+    }
+}
+```
+
+Vous aurez sûrement besoin d'installer d'autres packages :
+- "file-loader": "^6.2.0"
+- "@babel/eslint-parser": "^7.23.10"
