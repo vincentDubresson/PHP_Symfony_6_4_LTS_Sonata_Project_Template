@@ -752,3 +752,78 @@ Fichier `.eslintrc.json` :
 Vous aurez sûrement besoin d'installer d'autres packages :
 - "file-loader": "^6.2.0"
 - "@babel/eslint-parser": "^7.23.10"
+
+## Installation de Ice Vich Uploader Bundle
+
+1. Installation du bundle
+
+Ajouter ces lignes dans le `composer.json`
+
+```
+        "ice/vich-uploader-bundle": "7.2.0",
+```
+
+```
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://satis.ice-dev.com:446/"
+        }
+    ]
+```
+
+Puis faire un `composer update`.
+
+2. Configuration standard
+
+```yaml
+# config/packages/vich_uploader.yaml
+vich_uploader:
+  db_driver: orm
+
+parameters:
+  convert_images_webp_on_upload: true
+
+  #mappings:
+  #    products:
+  #        uri_prefix: /images/products
+  #        upload_destination: '%kernel.project_dir%/public/images/products'
+  #        namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+```
+
+```yaml
+# config/packages/liip_imagine.yaml
+# Documentation on how to configure the bundle can be found at: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+  # valid drivers options include "gd" or "gmagick" or "imagick"
+  driver: "gd"
+  twig:
+    mode: lazy
+```
+
+```yaml
+# config/routes/liip_imagine.yaml
+_liip_imagine:
+  resource: "@LiipImagineBundle/Resources/config/routing.yaml"
+```
+
+```yaml
+# config/packages/twig.yaml
+twig:
+  default_path: '%kernel.project_dir%/templates'
+  paths:
+    'assets/images': images
+  form_themes:
+    - '@IceVichUploader/Form/fields.html.twig'
+
+when@test:
+  twig:
+    strict_variables: true
+```
+
+```yaml
+# config/services.yaml
+imports:
+    - { resource: '../vendor/ice/vich-uploader-bundle/Resources/config/config.yml' }
+
+```

@@ -1,6 +1,9 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
-
+    paths:
+        'assets/images': images
+    form_themes:
+        - '@IceVichUploader/Form/fields.html.twig'
 
 when@test:
     twig:

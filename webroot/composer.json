@@ -16,6 +16,7 @@
         "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^2.9",
+        "ice/vich-uploader-bundle": "7.2.0",
         "knplabs/doctrine-behaviors": "^2.6",
         "nelmio/security-bundle": "^3.1",
         "symfony/apache-pack": "^1.0",
@@ -58,6 +59,10 @@
             "symfony/flex": true,
             "symfony/runtime": true,
             "phpstan/extension-installer": true
+        },
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
         },
         "sort-packages": true
     },
@@ -118,5 +123,11 @@
             "allow-contrib": false,
             "require": "6.4.*"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://satis.ice-dev.com:446/"
+        }
+    ]
 }
