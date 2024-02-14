@@ -1,5 +1,11 @@
 parameters:
-    tmpDir: 'tmp/phpstan'
+    tmpDir: '%rootDir%/../../../tmp/phpstan'
+    symfony:
+        # @see https://github.com/phpstan/phpstan-symfony#configuration
+        containerXmlPath: '%rootDir%/../../../var/cache/test/App_KernelTestDebugContainer.xml'
+        consoleApplicationLoader: 'tests/phpstan/console_application.php'
     excludePaths:
-        - 'src/Controller/TestController.php'
-
+        - '%rootDir%/../../../src/Controller/TestController.php'
+    ignoreErrors:
+    doctrine:
+        objectManagerLoader: '%rootDir%/../../../tests/phpstan/object_manager.php'

@@ -24,18 +24,18 @@ class AbstractContact implements TimestampableInterface
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Le prénom est obligatoire.')]
     #[Assert\Length(max: 255, maxMessage: 'Le prénom ne doit pas dépasser 255 caractères.')]
-    private ?string $firstname = null;
+    private string $firstname;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Le nom est obligatoire.')]
     #[Assert\Length(max: 255, maxMessage: 'Le nom ne doit pas dépasser 255 caractères.')]
-    private ?string $lastname = null;
+    private string $lastname;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank(message: 'L\'adresse email est obligatoire.')]
     #[Assert\Length(max: 180, maxMessage: 'L\'adresse email ne doit pas dépasser 180 caractères.')]
     #[Assert\Email(message: 'L\'adresse email "{{ value }}" n\'est pas valide.')]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\Column(type: 'string', length: 20)]
     #[Assert\NotBlank(message: 'Le numéro de téléphone est obligatoire.')]
@@ -43,7 +43,7 @@ class AbstractContact implements TimestampableInterface
         pattern: '^(?:(?:\+?33[ .-]?)?(?:(?:[1-9])(?:[ .-]?)){4}(?:[1-9]))|(?:0[ .-]?(?:(?:[1-9])(?:[ .-]?)){4}(?:[1-9]))$',
         message: 'Le numéro de téléphone doit correspondre aux formats suivants : +33.1.02.03.04.05, +33 1 02 03 04 05, +33102030405, 01.02.03.04.05, 01 02 03 04 05, 0102030405.'
     )]
-    private ?string $phone = null;
+    private string $phone;
 
     #[ORM\Column(type: 'boolean')]
     private bool $enable = false;
@@ -61,7 +61,7 @@ class AbstractContact implements TimestampableInterface
         return $this->id;
     }
 
-    public function getFirstname(): ?string
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
@@ -73,7 +73,7 @@ class AbstractContact implements TimestampableInterface
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastname(): string
     {
         return $this->lastname;
     }
@@ -85,7 +85,7 @@ class AbstractContact implements TimestampableInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -97,7 +97,7 @@ class AbstractContact implements TimestampableInterface
         return $this;
     }
 
-    public function getPhone(): ?string
+    public function getPhone(): string
     {
         return $this->phone;
     }
