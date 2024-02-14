@@ -825,5 +825,18 @@ when@test:
 # config/services.yaml
 imports:
     - { resource: '../vendor/ice/vich-uploader-bundle/Resources/config/config.yml' }
+```
 
+## Installation de Sonata Admin Bundle
+
+1. Installation des bundles
+
+Doc : [Sonata Admin Bundle](https://docs.sonata-project.org/projects/SonataAdminBundle/en/4.x/getting_started/installation/)
+
+```shell
+composer require sonata-project/admin-bundle
+```
+
+```shell
+composer require sonata-project/doctrine-orm-admin-bundle
 ```
