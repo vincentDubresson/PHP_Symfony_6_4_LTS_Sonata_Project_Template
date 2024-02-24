@@ -17,10 +17,10 @@ class User extends AbstractContact implements UserInterface, PasswordAuthenticat
     private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var ?string The hashed password
      */
-    #[ORM\Column(type: 'string')]
-    private string $password;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $password = null;
 
     /**
      * @see UserInterface
@@ -47,12 +47,12 @@ class User extends AbstractContact implements UserInterface, PasswordAuthenticat
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(?string $password): static
     {
         $this->password = $password;
 

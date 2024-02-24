@@ -21,6 +21,9 @@ class AbstractContact implements TimestampableInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(type: 'string', length: 20)]
+    private string $gender;
+
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Le prénom est obligatoire.')]
     #[Assert\Length(max: 255, maxMessage: 'Le prénom ne doit pas dépasser 255 caractères.')]
@@ -39,10 +42,6 @@ class AbstractContact implements TimestampableInterface
 
     #[ORM\Column(type: 'string', length: 20)]
     #[Assert\NotBlank(message: 'Le numéro de téléphone est obligatoire.')]
-    #[Assert\Regex(
-        pattern: '^(?:(?:\+?33[ .-]?)?(?:(?:[1-9])(?:[ .-]?)){4}(?:[1-9]))|(?:0[ .-]?(?:(?:[1-9])(?:[ .-]?)){4}(?:[1-9]))$',
-        message: 'Le numéro de téléphone doit correspondre aux formats suivants : +33.1.02.03.04.05, +33 1 02 03 04 05, +33102030405, 01.02.03.04.05, 01 02 03 04 05, 0102030405.'
-    )]
     private string $phone;
 
     #[ORM\Column(type: 'boolean')]
@@ -59,6 +58,18 @@ class AbstractContact implements TimestampableInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getGender(): string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): static
+    {
+        $this->gender = $gender;
+
+        return $this;
     }
 
     public function getFirstname(): string

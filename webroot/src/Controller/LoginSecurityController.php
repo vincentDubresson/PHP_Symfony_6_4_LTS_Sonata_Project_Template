@@ -13,7 +13,7 @@ class LoginSecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_logged_action');
+            return $this->redirectToRoute('sonata_admin_dashboard');
         }
 
         // get the login error if there is one

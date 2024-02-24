@@ -30,3 +30,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+# config/services.yaml
+
+    admin.category:
+        class: App\Admin\AdminAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Admin, manager_type: orm, label: Administrateur }
