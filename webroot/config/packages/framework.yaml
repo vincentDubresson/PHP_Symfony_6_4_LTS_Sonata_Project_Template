@@ -1,6 +1,7 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
+    default_locale: fr
     enabled_locales: ['fr']
     #csrf_protection: true
     annotations: false
@@ -9,6 +10,7 @@ framework:
     translator:
         fallbacks:
             - fr
+        default_path: '%kernel.project_dir%/translations'
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.

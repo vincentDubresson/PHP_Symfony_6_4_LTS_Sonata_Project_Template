@@ -39,6 +39,9 @@ class AdminAdmin extends AbstractAdmin
         $list
             ->add('gender')
             ->add('firstname')
+            ->add('createdAt', null, [
+                'timezone' => 'Europe/Paris',
+            ])
         ;
     }
 

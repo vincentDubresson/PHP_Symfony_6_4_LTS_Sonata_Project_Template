@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\TimestampableTrait;
 use App\Repository\AbstractContactRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\InheritanceType;
-use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
-use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AbstractContactRepository::class)]
 #[ORM\Table(name: 'user')]
 #[InheritanceType('SINGLE_TABLE')]
-class AbstractContact implements TimestampableInterface
+#[ORM\HasLifecycleCallbacks]
+class AbstractContact
 {
     use TimestampableTrait;
 
